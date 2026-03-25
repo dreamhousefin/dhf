@@ -4,11 +4,11 @@
   "version": "1.0.0",
   "description": "Dreamhouse Finance - Immobilien & Finanzierung aus einer Hand",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "dev": "npx astro dev",
+    "start": "npx astro dev",
+    "build": "npx astro build",
+    "preview": "npx astro preview",
+    "astro": "npx astro"
   },
   "dependencies": {
     "@astrojs/tailwind": "^5.1.0",
