@@ -1,0 +1,161 @@
+---
+// Navigation Header Component
+const navLinks = [
+  { href: '/', label: 'Startseite' },
+  { href: '/leistungen/', label: 'Leistungen' },
+  { href: '/rechner/', label: 'Rechner' },
+  { href: '/ueber-uns/', label: 'Über Uns' },
+  { href: '/kontakt/', label: 'Kontakt' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-sm border-b border-slate-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-28 lg:h-32">
+      
+      <!-- Logo -->
+      <a href="/" class="flex items-center group -ml-2" aria-label="Dreamhouse Finance - Zur Startseite">
+        <div class="w-28 h-28 rounded-xl overflow-hidden shadow-soft group-hover:shadow-md transition-shadow">
+          <img 
+            src="/images/logo.jpeg" 
+            alt="Dreamhouse Finance Logo" 
+            class="w-full h-full object-cover"
+            width="112"
+            height="112"
+          />
+        </div>
+      </a>
+      
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center gap-1" aria-label="Hauptnavigation">
+        {navLinks.map((link) => {
+          const isActive = currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href));
+          return (
+            <a 
+              href={link.href}
+              class={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                isActive 
+                  ? 'text-primary bg-primary-light' 
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          );
+        })}
+      </nav>
+      
+      <!-- CTA Button (Desktop) -->
+      <div class="hidden lg:block">
+        <a 
+          href="/kontakt/"
+          class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-medium text-sm rounded-lg hover:bg-primary-hover transition-colors shadow-soft hover:shadow-md"
+          aria-label="Zeit für dein Eigentum - Erstgespräch vereinbaren"
+        >
+          <i class="fa-regular fa-calendar-check" aria-hidden="true"></i>
+          Zeit für dein Eigentum
+        </a>
+      </div>
+      
+      <!-- Mobile Menu Button -->
+      <button 
+        type="button"
+        id="mobile-menu-button"
+        class="lg:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Menü öffnen"
+      >
+        <i id="menu-icon-open" class="fa-solid fa-bars text-xl" aria-hidden="true"></i>
+        <i id="menu-icon-close" class="fa-solid fa-xmark text-xl hidden" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Mobile Menu -->
+  <div 
+    id="mobile-menu" 
+    class="lg:hidden hidden bg-white border-t border-slate-100"
+    aria-label="Mobile Navigation"
+  >
+    <div class="px-4 py-4 space-y-2">
+      {navLinks.map((link) => {
+        const isActive = currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href));
+        return (
+          <a 
+            href={link.href}
+            class={`block px-4 py-3 text-base font-medium rounded-lg transition-colors ${
+              isActive 
+                ? 'text-primary bg-primary-light' 
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+            aria-current={isActive ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        );
+      })}
+      
+      <div class="pt-4 mt-4 border-t border-slate-100">
+        <a 
+          href="/kontakt/"
+          class="flex items-center justify-center gap-2 w-full px-5 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-hover transition-colors"
+          aria-label="Zeit für dein Eigentum - Erstgespräch vereinbaren"
+        >
+          <i class="fa-regular fa-calendar-check" aria-hidden="true"></i>
+          Zeit für dein Eigentum
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Mobile Menu Toggle
+  (function() {
+    const menuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('menu-icon-open');
+    const iconClose = document.getElementById('menu-icon-close');
+    
+    let isOpen = false;
+    
+    function toggleMenu() {
+      isOpen = !isOpen;
+      
+      if (isOpen) {
+        mobileMenu?.classList.remove('hidden');
+        iconOpen?.classList.add('hidden');
+        iconClose?.classList.remove('hidden');
+        menuButton?.setAttribute('aria-expanded', 'true');
+        menuButton?.setAttribute('aria-label', 'Menü schließen');
+      } else {
+        mobileMenu?.classList.add('hidden');
+        iconOpen?.classList.remove('hidden');
+        iconClose?.classList.add('hidden');
+        menuButton?.setAttribute('aria-expanded', 'false');
+        menuButton?.setAttribute('aria-label', 'Menü öffnen');
+      }
+    }
+    
+    menuButton?.addEventListener('click', toggleMenu);
+    
+    // Close menu when clicking on a link
+    const mobileLinks = mobileMenu?.querySelectorAll('a');
+    mobileLinks?.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) toggleMenu();
+      });
+    });
+    
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+      }
+    });
+  })();
+</script>

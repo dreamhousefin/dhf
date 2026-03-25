@@ -1,0 +1,39 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  icon: 'home' | 'chart' | 'handshake';
+  href: string;
+}
+
+const { title, description, icon, href } = Astro.props;
+
+const iconClasses: Record<string, string> = {
+  home: 'fa-solid fa-house',
+  chart: 'fa-solid fa-chart-bar',
+  handshake: 'fa-solid fa-handshake',
+};
+---
+
+<article class="group bg-white rounded-xl shadow-card p-8 hover:shadow-soft transition-all duration-300 hover:-translate-y-1 border border-slate-100">
+  <div class="w-14 h-14 bg-primary-light rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors duration-300">
+    <i class={`${iconClasses[icon]} text-2xl text-primary group-hover:text-white transition-colors duration-300`} aria-hidden="true"></i>
+  </div>
+  
+  <h3 class="text-xl font-semibold text-slate-800 mb-3">
+    {title}
+  </h3>
+  
+  <p class="text-slate-600 leading-relaxed mb-6">
+    {description}
+  </p>
+  
+  <a 
+    href={href}
+    class="inline-flex items-center gap-2 text-primary font-medium hover:text-primary-hover transition-colors group/link"
+    aria-label={`Mehr erfahren über ${title}`}
+  >
+    Mehr erfahren
+    <i class="fa-solid fa-arrow-right text-sm transition-transform group-hover/link:translate-x-1" aria-hidden="true"></i>
+  </a>
+</article>

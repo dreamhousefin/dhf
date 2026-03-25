@@ -1,0 +1,167 @@
+---
+export interface Props {
+  appId: string;
+  title: string;
+  description?: string;
+}
+
+const { appId, title, description } = Astro.props;
+const iframeId = `calc-${appId}`;
+---
+
+<div class="calculator-wrapper" data-calc-id={iframeId} data-app-id={appId}>
+  {description && (
+    <p class="text-slate-600 mb-4">{description}</p>
+  )}
+  
+  <!-- Placeholder -->
+  <div class="calc-placeholder bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl p-12 text-center" data-calc-id={iframeId}>
+    <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-primary">
+        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-2.625 6c-.54 0-.828.419-.936.634a6.766 6.766 0 00-.203.542c-.112.39-.24.847-.422 1.19-.353.652-1.212.723-1.702.184a.75.75 0 00-1.1 1.02c.314.365.745.648 1.223.848a3 3 0 104.498-3.09c.223-.358-.105-.79-.517-.79h-1.275a.75.75 0 01-.75-.75v-.5c0-.415.336-.75.75-.75h3.13c.414 0 .75.335.75.75v3c0 .415-.336.75-.75.75h-.692a.75.75 0 01-.75-.75v-.75H8.25v.75c0 .965.784 1.75 1.75 1.75h.692c1.12 0 2.06-.878 2.117-1.998.038-.724-.226-1.4-.702-1.9a.75.75 0 00-1.106 1.012c.233.253.354.588.335.933a.625.625 0 01-.62.553h-.692a.75.75 0 01-.75-.75v-2.25h1.5v1.5c0 .415.336.75.75.75h1.275a.75.75 0 00.517-1.29 4.5 4.5 0 00-1.723-1.002V8.25z" clip-rule="evenodd"/>
+      </svg>
+    </div>
+    <h4 class="text-lg font-semibold text-slate-900 mb-2">{title}</h4>
+    <p class="text-slate-500 text-sm mb-4">Dieser Rechner lädt Inhalte von einem externen Anbieter.</p>
+    <button 
+      type="button"
+      class="calc-load-btn px-6 py-2 bg-primary text-white font-medium rounded-lg hover:bg-primary-hover transition-colors"
+      data-calc-id={iframeId}
+      data-app-id={appId}
+    >
+      Rechner laden
+    </button>
+  </div>
+  
+  <!-- Iframe Container (hidden by default) -->
+  <div class="calc-container hidden" data-calc-id={iframeId}>
+    <iframe 
+      id={iframeId}
+      class="w-full calc-iframe"
+      style="border: none; min-height: 400px;"
+      data-src={`https://weihermunoz.ehyp.de/public/calculators/?appId=${appId}`}
+      title={title}
+      loading="lazy"
+    ></iframe>
+  </div>
+</div>
+
+<script is:inline>
+  // Calculator Manager - einmalig initialisiert
+  window.CalculatorManager = window.CalculatorManager || {
+    COOKIE_KEY: 'dreamhouse_cookie_consent_v2',
+    initialized: false,
+    
+    init: function() {
+      if (this.initialized) return;
+      this.initialized = true;
+      
+      this.setupMessageListener();
+      this.setupClickHandlers();
+      this.checkConsentAndLoad();
+      this.listenToConsentChanges();
+    },
+    
+    getConsent: function() {
+      try {
+        return localStorage.getItem(this.COOKIE_KEY);
+      } catch(e) {
+        return null;
+      }
+    },
+    
+    checkConsentAndLoad: function() {
+      const consent = this.getConsent();
+      if (consent === 'accepted' || consent === 'essential') {
+        this.loadAllCalculators();
+      }
+    },
+    
+    loadAllCalculators: function() {
+      document.querySelectorAll('.calculator-wrapper').forEach(wrapper => {
+        const calcId = wrapper.getAttribute('data-calc-id');
+        const appId = wrapper.getAttribute('data-app-id');
+        if (calcId && appId) {
+          this.loadCalculator(calcId, appId);
+        }
+      });
+    },
+    
+    loadCalculator: function(calcId, appId) {
+      const wrapper = document.querySelector(`.calculator-wrapper[data-calc-id="${calcId}"]`);
+      if (!wrapper) return;
+      
+      const placeholder = wrapper.querySelector('.calc-placeholder');
+      const container = wrapper.querySelector('.calc-container');
+      const iframe = wrapper.querySelector('iframe');
+      
+      if (!placeholder || !container || !iframe) return;
+      
+      const src = iframe.getAttribute('data-src');
+      if (src && !iframe.src) {
+        iframe.src = src;
+      }
+      
+      placeholder.classList.add('hidden');
+      container.classList.remove('hidden');
+    },
+    
+    setupMessageListener: function() {
+      window.addEventListener('message', (event) => {
+        // Prüfe ob Nachricht von eHyp kommt
+        if (!event.origin.includes('ehyp.de')) return;
+        
+        // Height Change
+        if (event.data && event.data.type === 'heightChange' && event.data.height) {
+          document.querySelectorAll('.calc-iframe').forEach(iframe => {
+            if (iframe.contentWindow === event.source) {
+              iframe.style.height = event.data.height + 'px';
+            }
+          });
+        }
+        
+        // Ready Signal
+        if (event.data === 'ready') {
+          document.querySelectorAll('.calc-iframe').forEach(iframe => {
+            if (iframe.contentWindow === event.source) {
+              iframe.contentWindow.postMessage(
+                { type: 'CALCULATOR_PARTNER_DOMAIN', host: window.location.host },
+                '*'
+              );
+            }
+          });
+        }
+      });
+    },
+    
+    setupClickHandlers: function() {
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.calc-load-btn');
+        if (!btn) return;
+        
+        const calcId = btn.getAttribute('data-calc-id');
+        const appId = btn.getAttribute('data-app-id');
+        if (calcId && appId) {
+          this.loadCalculator(calcId, appId);
+        }
+      });
+    },
+    
+    listenToConsentChanges: function() {
+      window.addEventListener('cookieConsentChanged', (e) => {
+        if (e.detail && (e.detail.consent === 'accepted' || e.detail.consent === 'essential')) {
+          this.loadAllCalculators();
+        }
+      });
+    }
+  };
+  
+  // Initialisierung
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      window.CalculatorManager.init();
+    });
+  } else {
+    window.CalculatorManager.init();
+  }
+</script>

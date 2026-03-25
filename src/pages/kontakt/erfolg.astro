@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import CookieBanner from '../../components/CookieBanner.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+
+const title = 'Nachricht gesendet';
+const description = 'Ihre Nachricht wurde erfolgreich an Dreamhouse Finance gesendet. Wir melden uns innerhalb von 24 Stunden bei Ihnen.';
+---
+
+<Layout title={title} description={description} noindex={true}>
+  <Header slot="header" />
+  
+  <main class="flex-grow flex items-center justify-center bg-slate-50 py-20 lg:py-32">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-8">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12 text-green-600">
+          <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <h1 class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">Nachricht erfolgreich gesendet!</h1>
+      <p class="text-lg text-slate-600 mb-8">
+        Vielen Dank für Ihre Anfrage. Ich werde mich innerhalb von 24 Stunden bei Ihnen melden.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a 
+          href="/"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-hover transition-colors"
+        >
+          Zurück zur Startseite
+        </a>
+        <a 
+          href="/leistungen/"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-primary hover:text-primary transition-colors"
+        >
+          Leistungen ansehen
+        </a>
+      </div>
+    </div>
+  </main>
+  
+  <Footer slot="footer" />
+  <CookieBanner slot="cookie-banner" />
+  <WhatsAppButton slot="whatsapp" />
+</Layout>

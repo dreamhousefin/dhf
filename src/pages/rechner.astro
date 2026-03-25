@@ -1,0 +1,240 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import CalculatorIframe from '../components/CalculatorIframe.astro';
+
+const title = 'Finanzierungsrechner';
+const description = 'Berechnen Sie Ihre Immobilienfinanzierung mit unseren kostenlosen Online-Rechnern. Budgetrechner, Tilgungsrechner, Zinsrechner und mehr.';
+
+// Alle 12 Rechner mit ihren App-IDs
+const calculators = [
+  {
+    id: 'budget',
+    appId: '69305b010a42e758b5129d16',
+    title: 'Budgetrechner',
+    description: 'Berechnen Sie, wie viel Immobilie Sie sich leisten können. Basierend auf Ihrem Haushaltsnettoeinkommen und den aktuellen Zinsen.',
+    icon: 'fa-wallet',
+  },
+  {
+    id: 'tilgung',
+    appId: '69305b010a42e758b5129d20',
+    title: 'Tilgungsrechner',
+    description: 'Ermitteln Sie die optimale monatliche Rate und die erwartete Laufzeit Ihrer Immobilienfinanzierung.',
+    icon: 'fa-chart-line',
+  },
+  {
+    id: 'ratenkredit',
+    appId: '69305b010a42e758b5129d17',
+    title: 'Ratenkreditrechner',
+    description: 'Berechnen Sie Raten und Laufzeiten für Ihren Ratenkredit.',
+    icon: 'fa-credit-card',
+  },
+  {
+    id: 'anschluss',
+    appId: '69305b010a42e758b5129d18',
+    title: 'Anschlussfinanzierungsrechner',
+    description: 'Planen Sie frühzeitig Ihre Anschlussfinanzierung nach Ablauf der Zinsbindung.',
+    icon: 'fa-rotate',
+  },
+  {
+    id: 'volltilgung',
+    appId: '69305b010a42e758b5129d19',
+    title: 'Volltilgungsrechner',
+    description: 'Berechnen Sie eine Immobilienfinanzierung mit Volltilgung ohne Schlussrate.',
+    icon: 'fa-check-circle',
+  },
+  {
+    id: 'haushalt',
+    appId: '69305b010a42e758b5129d1a',
+    title: 'Haushaltsrechner',
+    description: 'Analysieren Sie Ihre Haushaltsfinanzen für eine solide Finanzierungsplanung.',
+    icon: 'fa-house',
+  },
+  {
+    id: 'zins',
+    appId: '69305b010a42e758b5129d1b',
+    title: 'Zinsrechner',
+    description: 'Berechnen Sie Zinskosten und den Effektivzins Ihrer Finanzierung.',
+    icon: 'fa-percent',
+  },
+  {
+    id: 'zinsverlauf',
+    appId: '69305b010a42e758b5129d1c',
+    title: 'Zinsverlauf',
+    description: 'Sehen Sie die historische Entwicklung der Bauzinsen und planen Sie vorausschauend.',
+    icon: 'fa-arrow-trend-up',
+  },
+  {
+    id: 'zinscheck',
+    appId: '69305b010a42e758b5129d1d',
+    title: 'Zinscheck / Zinsvergleich',
+    description: 'Vergleichen Sie aktuelle Zinsangebote verschiedener Banken.',
+    icon: 'fa-scale-balanced',
+  },
+  {
+    id: 'immobilienwert',
+    appId: '69305b010a42e758b5129d1e',
+    title: 'Immobilienwertrechner',
+    description: 'Schätzen Sie den Wert Ihrer Immobilie oder eines potenziellen Kaufobjekts.',
+    icon: 'fa-building',
+  },
+  {
+    id: 'sanierung',
+    appId: '69305b010a42e758b5129d1f',
+    title: 'Sanierungsrechner',
+    description: 'Berechnen Sie die Finanzierung von Sanierungs- und Modernisierungsmaßnahmen.',
+    icon: 'fa-hammer',
+  },
+  {
+    id: 'anfragen',
+    appId: '69a0a1ea21e575ae47b28e79',
+    title: 'Finanzierungsanfrage',
+    description: 'Stellen Sie direkt eine unverbindliche Anfrage für Ihre Immobilienfinanzierung.',
+    icon: 'fa-envelope',
+  },
+];
+---
+
+<Layout title={title} description={description}>
+  <Header slot="header" />
+  
+  <!-- Page Hero -->
+  <section class="relative bg-slate-50 py-20 lg:py-28" aria-labelledby="page-heading">
+    <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 w-80 h-80 bg-primary/10 rounded-full blur-3xl"></div>
+    </div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-primary-light text-primary text-sm font-semibold rounded-full mb-4">
+        Online-Tools
+      </span>
+      <h1 id="page-heading" class="text-4xl lg:text-5xl font-bold text-slate-800 mb-6">
+        Finanzierungsrechner
+      </h1>
+      <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+        Berechnen Sie Ihre Immobilienfinanzierung mit unseren kostenlosen Online-Rechnern. 
+        Schnell, unverbindlich und professionell.
+      </p>
+    </div>
+  </section>
+  
+  <!-- DSGVO Hinweis -->
+  <section class="py-6 bg-amber-50 border-b border-amber-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-start gap-3">
+        <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 shrink-0" aria-hidden="true"></i>
+        <p class="text-sm text-amber-800">
+          <strong>Datenschutzhinweis:</strong> Die Rechner laden Inhalte von unserem Partner eHyp. 
+          Bei der Nutzung werden Daten an eHyp übermittelt. 
+          <a href="/datenschutz/" class="underline hover:text-amber-900">Mehr zur Datenverarbeitung</a>
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Calculator Navigation (Sticky) -->
+  <div class="sticky top-16 lg:top-20 z-30 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="flex gap-2 overflow-x-auto py-4 no-scrollbar" aria-label="Rechner Navigation">
+        {calculators.map((calc) => (
+          <a 
+            href={`#${calc.id}`}
+            class="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-primary-light text-slate-700 hover:text-primary rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
+          >
+            <i class={`fa-solid ${calc.icon} text-sm`} aria-hidden="true"></i>
+            {calc.title}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </div>
+  
+  <!-- Calculators -->
+  <section class="py-16 lg:py-20 bg-white" aria-labelledby="calculators-heading">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="calculators-heading" class="sr-only">Alle Rechner</h2>
+      
+      <div class="space-y-16">
+        {calculators.map((calc, index) => (
+          <article 
+            id={calc.id}
+            class="scroll-mt-40"
+            aria-labelledby={`${calc.id}-heading`}
+          >
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-12 h-12 bg-primary-light rounded-xl flex items-center justify-center">
+                <i class={`fa-solid ${calc.icon} text-2xl text-primary`} aria-hidden="true"></i>
+              </div>
+              <div>
+                <h3 id={`${calc.id}-heading`} class="text-2xl font-bold text-slate-800">
+                  {calc.title}
+                </h3>
+                {index < 3 && (
+                  <span class="inline-block px-2 py-0.5 bg-primary text-white text-xs font-medium rounded">
+                    Beliebt
+                  </span>
+                )}
+              </div>
+            </div>
+            
+            <div class="bg-slate-50 rounded-2xl p-1">
+              <CalculatorIframe 
+                appId={calc.appId}
+                title={calc.title}
+                description={calc.description}
+              />
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="py-20 lg:py-28 bg-slate-800" aria-labelledby="cta-heading">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 id="cta-heading" class="text-3xl lg:text-4xl font-bold text-white mb-6">
+        Benötigen Sie persönliche Beratung?
+      </h2>
+      <p class="text-xl text-slate-300 mb-10">
+        Die Rechner geben Ihnen eine erste Orientierung. Für eine maßgeschneiderte Finanzierungslösung sprechen wir persönlich.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a 
+          href="/kontakt/"
+          class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-hover transition-all duration-300 shadow-lg"
+        >
+          <i class="fa-regular fa-calendar-check" aria-hidden="true"></i>
+          Beratungstermin vereinbaren
+        </a>
+        <a 
+          href="tel:01622894304"
+          class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-semibold rounded-lg border-2 border-white/20 hover:bg-white/20 transition-all duration-300"
+        >
+          <i class="fa-solid fa-phone" aria-hidden="true"></i>
+          0162 2894304
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <Footer slot="footer" />
+  <CookieBanner slot="cookie-banner" />
+  <WhatsAppButton slot="whatsapp" />
+</Layout>
+
+<style>
+  /* Hide scrollbar for calculator navigation */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

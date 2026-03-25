@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dreamhouse-finance.de/sitemap.xml
+
+# Disallow admin/private areas (if any exist)
+Disallow: /admin/
+Disallow: /private/

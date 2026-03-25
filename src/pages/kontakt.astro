@@ -1,0 +1,292 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+
+const title = 'Kontakt';
+const description = 'Kontaktieren Sie Dreamhouse Finance. Esperanza Weiher Muñoz berät Sie persönlich zu Immobilien und Finanzierung in Bremen. Telefon: 0162 2894304';
+
+const contactInfo = {
+  name: 'Esperanza Weiher Muñoz',
+  company: 'Dreamhouse Finance',
+  address: 'Andreestraße 59',
+  city: '28215 Bremen',
+  phone: '0162 2894304',
+  phoneRaw: '01622894304',
+  email: 'Info@dreamhouse-finance.de',
+  hours: 'Mo-Fr: 09:00 - 18:00 Uhr',
+};
+---
+
+<Layout title={title} description={description}>
+  <Header slot="header" />
+  
+  <!-- ========================================
+       PAGE HERO
+       ======================================== -->
+  <section class="relative bg-slate-50 py-20 lg:py-28" aria-labelledby="page-heading">
+    <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+    </div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-primary-light text-primary text-sm font-semibold rounded-full mb-4">
+        Kontakt
+      </span>
+      <h1 id="page-heading" class="text-4xl lg:text-5xl font-bold text-slate-800 mb-6">
+        Nehmen Sie Kontakt auf
+      </h1>
+      <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+        Haben Sie Fragen zu Ihrem Immobilienvorhaben oder zur Finanzierung? Ich freue mich auf Ihre Nachricht!
+      </p>
+    </div>
+  </section>
+  
+  <!-- ========================================
+       CONTACT SECTION
+       ======================================== -->
+  <section class="py-20 lg:py-28 bg-white" aria-labelledby="contact-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-5 gap-12 lg:gap-16">
+        
+        <!-- Contact Info Sidebar -->
+        <div class="lg:col-span-2">
+          <h2 id="contact-heading" class="text-2xl font-bold text-slate-800 mb-6">
+            Direkter Kontakt
+          </h2>
+          <p class="text-slate-600 mb-8">
+            Rufen Sie mich an, schreiben Sie eine E-Mail oder nutzen Sie das Kontaktformular. Ich antworte innerhalb von 24 Stunden.
+          </p>
+          
+          <address class="not-italic space-y-6">
+            <!-- Phone -->
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-phone text-xl text-primary" aria-hidden="true"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-slate-800 mb-1">Telefon</p>
+                <a href={`tel:${contactInfo.phoneRaw}`} class="text-primary hover:text-primary-hover font-medium transition-colors">
+                  {contactInfo.phone}
+                </a>
+                <p class="text-sm text-slate-500 mt-1">{contactInfo.hours}</p>
+              </div>
+            </div>
+            
+            <!-- Email -->
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-envelope text-xl text-primary" aria-hidden="true"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-slate-800 mb-1">E-Mail</p>
+                <a href={`mailto:${contactInfo.email}`} class="text-primary hover:text-primary-hover font-medium transition-colors">
+                  {contactInfo.email}
+                </a>
+              </div>
+            </div>
+            
+            <!-- Address -->
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-location-dot text-xl text-primary" aria-hidden="true"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-slate-800 mb-1">Adresse</p>
+                <p class="text-slate-600">{contactInfo.name}</p>
+                <p class="text-slate-600">{contactInfo.company}</p>
+                <p class="text-slate-600">{contactInfo.address}</p>
+                <p class="text-slate-600">{contactInfo.city}</p>
+              </div>
+            </div>
+            
+            <!-- WhatsApp -->
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-[#25D366]/10 rounded-lg flex items-center justify-center shrink-0">
+                <i class="fa-brands fa-whatsapp text-xl text-[#25D366]" aria-hidden="true"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-slate-800 mb-1">WhatsApp</p>
+                <a 
+                  href={`https://wa.me/49${contactInfo.phoneRaw}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-[#25D366] hover:text-[#128C7E] font-medium transition-colors inline-flex items-center gap-1"
+                >
+                  Nachricht senden
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                    <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </address>
+        </div>
+        
+        <!-- Contact Form -->
+        <div class="lg:col-span-3">
+          <div class="bg-slate-50 rounded-2xl p-8 lg:p-10">
+            <h3 class="text-xl font-bold text-slate-800 mb-2">
+              Schreiben Sie mir
+            </h3>
+            <p class="text-slate-600 mb-6">
+              Füllen Sie das Formular aus – ich melde mich umgehend bei Ihnen.
+            </p>
+            
+            <!-- Web3Forms Contact Form -->
+            <form 
+              action="https://api.web3forms.com/submit"
+              method="POST"
+              class="space-y-6"
+              aria-label="Kontaktformular"
+            >
+              <!-- 🔴 WICHTIG: Web3Forms Access Key hier einfügen! -->
+              <!-- Holen Sie Ihren Key von: https://web3forms.com/ -->
+              <!-- Ersetzen Sie IHRE_WEB3FORMS_ACCESS_KEY mit Ihrem echten Key -->
+              <input type="hidden" name="access_key" value="IHRE_WEB3FORMS_ACCESS_KEY" />
+              
+              <!-- Redirect URL after submission -->
+              <input type="hidden" name="redirect" value="https://dreamhouse-finance.de/kontakt/erfolg/" />
+              
+              <!-- Honeypot Spam Protection -->
+              <input 
+                type="checkbox" 
+                name="botcheck" 
+                class="hidden" 
+                style="display: none;" 
+                tabindex="-1" 
+                autocomplete="off"
+                aria-hidden="true"
+              />
+              
+              <!-- Subject -->
+              <input type="hidden" name="subject" value="Neue Kontaktanfrage - Dreamhouse Finance Website" />
+              
+              <!-- From Name -->
+              <input type="hidden" name="from_name" value="Dreamhouse Finance Website" />
+              
+              <!-- Name Field -->
+              <div>
+                <label for="name" class="block text-sm font-medium text-slate-700 mb-2">
+                  Ihr Name <span class="text-primary">*</span>
+                </label>
+                <input 
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white"
+                  placeholder="Max Mustermann"
+                  aria-required="true"
+                />
+              </div>
+              
+              <!-- Email & Phone Row -->
+              <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label for="email" class="block text-sm font-medium text-slate-700 mb-2">
+                    E-Mail <span class="text-primary">*</span>
+                  </label>
+                  <input 
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white"
+                    placeholder="max@beispiel.de"
+                    aria-required="true"
+                  />
+                </div>
+                <div>
+                  <label for="phone" class="block text-sm font-medium text-slate-700 mb-2">
+                    Telefon
+                  </label>
+                  <input 
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white"
+                    placeholder="0162 12345678"
+                  />
+                </div>
+              </div>
+              
+              <!-- Subject Selection -->
+              <div>
+                <label for="subject-select" class="block text-sm font-medium text-slate-700 mb-2">
+                  Betreff <span class="text-primary">*</span>
+                </label>
+                <select 
+                  id="subject-select"
+                  name="betreff"
+                  required
+                  class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white"
+                  aria-required="true"
+                >
+                  <option value="" disabled selected>Bitte wählen...</option>
+                  <option value="immobilienmaklerin">Immobilienmaklerin</option>
+                  <option value="finanzierung">Immobilienfinanzierung</option>
+                  <option value="beides">Beides aus einer Hand</option>
+                  <option value="termin">Beratungstermin vereinbaren</option>
+                  <option value="sonstiges">Sonstiges</option>
+                </select>
+              </div>
+              
+              <!-- Message -->
+              <div>
+                <label for="message" class="block text-sm font-medium text-slate-700 mb-2">
+                  Ihre Nachricht <span class="text-primary">*</span>
+                </label>
+                <textarea 
+                  id="message"
+                  name="message"
+                  required
+                  rows="5"
+                  class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white resize-none"
+                  placeholder="Beschreiben Sie kurz Ihr Anliegen..."
+                  aria-required="true"
+                ></textarea>
+              </div>
+              
+              <!-- DSGVO Checkbox -->
+              <div class="flex items-start gap-3">
+                <input 
+                  type="checkbox"
+                  id="dsgvo"
+                  name="dsgvo"
+                  required
+                  class="w-5 h-5 mt-0.5 rounded border-slate-300 text-primary focus:ring-primary"
+                  aria-required="true"
+                />
+                <label for="dsgvo" class="text-sm text-slate-600">
+                  Ich habe die <a href="/datenschutz/" class="text-primary hover:underline" target="_blank">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten gemäß DSGVO zu. <span class="text-primary">*</span>
+                </label>
+              </div>
+              
+              <!-- Submit Button -->
+              <button 
+                type="submit"
+                class="w-full px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-hover transition-all duration-300 shadow-soft hover:shadow-md flex items-center justify-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                  <path d="M3.105 2.289a.75.75 0 00-.826.95l1.414 4.925A1.5 1.5 0 005.135 9.25h6.115a.75.75 0 010 1.5H5.135a1.5 1.5 0 00-1.442 1.086l-1.414 4.926a.75.75 0 00.826.95 28.897 28.897 0 0015.293-7.154.75.75 0 000-1.115A28.897 28.897 0 003.105 2.289z"/>
+                </svg>
+                Nachricht senden
+              </button>
+              
+              <p class="text-xs text-slate-500 text-center">
+                Mit * markierte Felder sind Pflichtfelder.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <Footer slot="footer" />
+  <CookieBanner slot="cookie-banner" />
+  <WhatsAppButton slot="whatsapp" />
+</Layout>

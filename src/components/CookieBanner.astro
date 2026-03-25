@@ -1,0 +1,100 @@
+---
+// DSGVO-compliant Cookie Banner
+---
+
+<div 
+  id="cookie-banner" 
+  class="fixed bottom-0 left-0 right-0 bg-white shadow-lg z-[9999] transform translate-y-full transition-transform duration-300"
+  style="box-shadow: 0 -4px 20px rgba(0,0,0,0.1);"
+  role="dialog" 
+  aria-labelledby="cookie-title" 
+  aria-describedby="cookie-desc"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+      <div class="flex-1">
+        <h3 id="cookie-title" class="text-lg font-semibold text-slate-900 mb-2">
+          Datenschutzeinstellungen
+        </h3>
+        <p id="cookie-desc" class="text-slate-600 text-sm leading-relaxed max-w-3xl">
+          Wir verwenden essentielle Cookies und mit Ihrer Einwilligung externe Finanzierungsrechner. 
+          Weitere Informationen finden Sie in unserer <a href="/datenschutz/" class="text-primary hover:underline">Datenschutzerklärung</a>.
+        </p>
+      </div>
+      
+      <div class="flex flex-wrap gap-3 shrink-0">
+        <button 
+          type="button"
+          class="cookie-btn-essential px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
+        >
+          Nur Essentiell
+        </button>
+        <button 
+          type="button"
+          class="cookie-btn-accept px-6 py-2 text-sm font-medium text-white rounded-lg hover:opacity-90 transition-colors shadow-soft"
+          style="background-color: #fb4285;"
+        >
+          Alle akzeptieren
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  // Cookie Consent - garantiert anzeigen wenn nicht gesetzt
+  (function() {
+    const STORAGE_KEY = 'dreamhouse_cookie_consent_v2';
+    const banner = document.getElementById('cookie-banner');
+    
+    function showBanner() {
+      if (banner) {
+        banner.style.transform = 'translateY(0)';
+      }
+    }
+    
+    function hideBanner() {
+      if (banner) {
+        banner.style.transform = 'translateY(100%)';
+        setTimeout(function() {
+          banner.style.display = 'none';
+        }, 300);
+      }
+    }
+    
+    function setConsent(value) {
+      try {
+        localStorage.setItem(STORAGE_KEY, value);
+      } catch(e) {}
+      hideBanner();
+      window.dispatchEvent(new CustomEvent('cookieConsentChanged', { 
+        detail: { consent: value } 
+      }));
+    }
+    
+    // Prüfe ob Consent bereits vorhanden
+    var hasConsent = false;
+    try {
+      hasConsent = !!localStorage.getItem(STORAGE_KEY);
+    } catch(e) {}
+    
+    if (!hasConsent) {
+      // Zeige Banner nach kurzer Verzögerung
+      setTimeout(showBanner, 500);
+    } else {
+      banner.style.display = 'none';
+      window.dispatchEvent(new CustomEvent('cookieConsentChanged', { 
+        detail: { consent: localStorage.getItem(STORAGE_KEY) } 
+      }));
+    }
+    
+    // Event Listener
+    document.querySelector('.cookie-btn-accept')?.addEventListener('click', function() {
+      setConsent('accepted');
+    });
+    
+    document.querySelector('.cookie-btn-essential')?.addEventListener('click', function() {
+      setConsent('essential');
+    });
+  })();
+</script>

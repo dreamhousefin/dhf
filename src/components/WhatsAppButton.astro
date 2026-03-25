@@ -1,0 +1,21 @@
+---
+// Floating WhatsApp Button
+const whatsappNumber = '491622894304';
+const whatsappUrl = `https://wa.me/${whatsappNumber}`;
+---
+
+<a 
+  href={whatsappUrl}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
+  aria-label="Über WhatsApp kontaktieren"
+  title="Schreiben Sie uns auf WhatsApp"
+>
+  <i class="fa-brands fa-whatsapp text-3xl text-white" aria-hidden="true"></i>
+  
+  <!-- Tooltip -->
+  <span class="absolute right-full mr-3 px-3 py-2 bg-slate-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+    WhatsApp
+  </span>
+</a>

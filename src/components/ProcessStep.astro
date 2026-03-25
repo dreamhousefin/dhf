@@ -1,0 +1,32 @@
+---
+export interface Props {
+  number: number;
+  title: string;
+  description: string;
+  isLast?: boolean;
+}
+
+const { number, title, description, isLast = false } = Astro.props;
+---
+
+<div class="relative flex gap-6 lg:gap-8">
+  <!-- Step Number & Line -->
+  <div class="flex flex-col items-center">
+    <div class="w-12 h-12 bg-primary text-white rounded-xl flex items-center justify-center font-bold text-lg shrink-0 shadow-soft">
+      {number}
+    </div>
+    {!isLast && (
+      <div class="w-0.5 flex-1 bg-slate-200 my-4" aria-hidden="true"></div>
+    )}
+  </div>
+  
+  <!-- Content -->
+  <div class="pb-12">
+    <h3 class="text-xl font-semibold text-slate-900 mb-2">
+      {title}
+    </h3>
+    <p class="text-slate-600 leading-relaxed">
+      {description}
+    </p>
+  </div>
+</div>
