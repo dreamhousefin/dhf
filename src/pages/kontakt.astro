@@ -141,6 +141,8 @@ const contactInfo = {
               method="POST"
               class="space-y-6"
               aria-label="Kontaktformular"
+              id="contact-form"
+              novalidate
             >
               <!-- 🔴 WICHTIG: Web3Forms Access Key hier einfügen! -->
               <!-- Holen Sie Ihren Key von: https://web3forms.com/ -->
@@ -168,7 +170,7 @@ const contactInfo = {
               <input type="hidden" name="from_name" value="Dreamhouse Finance Website" />
               
               <!-- Name Field -->
-              <div>
+              <div class="form-field">
                 <label for="name" class="block text-sm font-medium text-slate-700 mb-2">
                   Ihr Name <span class="text-primary">*</span>
                 </label>
@@ -177,15 +179,17 @@ const contactInfo = {
                   id="name"
                   name="name"
                   required
+                  minlength="2"
                   class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white"
                   placeholder="Max Mustermann"
                   aria-required="true"
                 />
+                <p class="error-message hidden text-red-500 text-sm mt-1" role="alert"></p>
               </div>
               
               <!-- Email & Phone Row -->
               <div class="grid md:grid-cols-2 gap-6">
-                <div>
+                <div class="form-field">
                   <label for="email" class="block text-sm font-medium text-slate-700 mb-2">
                     E-Mail <span class="text-primary">*</span>
                   </label>
@@ -198,6 +202,7 @@ const contactInfo = {
                     placeholder="max@beispiel.de"
                     aria-required="true"
                   />
+                  <p class="error-message hidden text-red-500 text-sm mt-1" role="alert"></p>
                 </div>
                 <div>
                   <label for="phone" class="block text-sm font-medium text-slate-700 mb-2">
@@ -207,6 +212,7 @@ const contactInfo = {
                     type="tel"
                     id="phone"
                     name="phone"
+                    pattern="[0-9\s\-+]+"
                     class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white"
                     placeholder="0162 12345678"
                   />
@@ -214,7 +220,7 @@ const contactInfo = {
               </div>
               
               <!-- Subject Selection -->
-              <div>
+              <div class="form-field">
                 <label for="subject-select" class="block text-sm font-medium text-slate-700 mb-2">
                   Betreff <span class="text-primary">*</span>
                 </label>
@@ -232,10 +238,11 @@ const contactInfo = {
                   <option value="termin">Beratungstermin vereinbaren</option>
                   <option value="sonstiges">Sonstiges</option>
                 </select>
+                <p class="error-message hidden text-red-500 text-sm mt-1" role="alert"></p>
               </div>
               
               <!-- Message -->
-              <div>
+              <div class="form-field">
                 <label for="message" class="block text-sm font-medium text-slate-700 mb-2">
                   Ihre Nachricht <span class="text-primary">*</span>
                 </label>
@@ -243,15 +250,17 @@ const contactInfo = {
                   id="message"
                   name="message"
                   required
+                  minlength="10"
                   rows="5"
                   class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white resize-none"
                   placeholder="Beschreiben Sie kurz Ihr Anliegen..."
                   aria-required="true"
                 ></textarea>
+                <p class="error-message hidden text-red-500 text-sm mt-1" role="alert"></p>
               </div>
               
               <!-- DSGVO Checkbox -->
-              <div class="flex items-start gap-3">
+              <div class="form-field flex items-start gap-3">
                 <input 
                   type="checkbox"
                   id="dsgvo"
@@ -263,12 +272,13 @@ const contactInfo = {
                 <label for="dsgvo" class="text-sm text-slate-600">
                   Ich habe die <a href="/datenschutz/" class="text-primary hover:underline" target="_blank">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten gemäß DSGVO zu. <span class="text-primary">*</span>
                 </label>
+                <p class="error-message hidden text-red-500 text-sm mt-1 w-full" role="alert"></p>
               </div>
               
               <!-- Submit Button -->
               <button 
                 type="submit"
-                class="w-full px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-hover transition-all duration-300 shadow-soft hover:shadow-md flex items-center justify-center gap-2"
+                class="btn-premium w-full px-8 py-4 bg-primary text-white font-semibold rounded-lg transition-all duration-300 shadow-soft hover:shadow-md flex items-center justify-center gap-2"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                   <path d="M3.105 2.289a.75.75 0 00-.826.95l1.414 4.925A1.5 1.5 0 005.135 9.25h6.115a.75.75 0 010 1.5H5.135a1.5 1.5 0 00-1.442 1.086l-1.414 4.926a.75.75 0 00.826.95 28.897 28.897 0 0015.293-7.154.75.75 0 000-1.115A28.897 28.897 0 003.105 2.289z"/>
@@ -290,3 +300,75 @@ const contactInfo = {
   <CookieBanner slot="cookie-banner" />
   <WhatsAppButton slot="whatsapp" />
 </Layout>
+
+<script>
+  // Inline Form Validation
+  (function() {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+    
+    const fields = form.querySelectorAll('input, select, textarea');
+    
+    // Validate individual field
+    function validateField(field) {
+      const container = field.closest('.form-field');
+      const errorEl = container?.querySelector('.error-message');
+      
+      if (!errorEl) return true;
+      
+      let error = '';
+      
+      if (field.hasAttribute('required') && !field.value.trim()) {
+        error = 'Dieses Feld ist erforderlich.';
+      } else if (field.type === 'email' && field.value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(field.value)) {
+          error = 'Bitte geben Sie eine gültige E-Mail-Adresse ein.';
+        }
+      } else if (field.minLength && field.value.length < field.minLength) {
+        error = `Mindestens ${field.minLength} Zeichen erforderlich.`;
+      }
+      
+      if (error) {
+        errorEl.textContent = error;
+        errorEl.classList.remove('hidden');
+        field.classList.add('border-red-500', 'bg-red-50');
+        field.classList.remove('border-slate-200');
+        return false;
+      } else {
+        errorEl.classList.add('hidden');
+        field.classList.remove('border-red-500', 'bg-red-50');
+        field.classList.add('border-slate-200');
+        return true;
+      }
+    }
+    
+    // Real-time validation on input
+    fields.forEach(field => {
+      field.addEventListener('blur', () => validateField(field));
+      field.addEventListener('input', () => {
+        if (field.classList.contains('border-red-500')) {
+          validateField(field);
+        }
+      });
+    });
+    
+    // Form submission validation
+    form.addEventListener('submit', (e) => {
+      let isValid = true;
+      
+      fields.forEach(field => {
+        if (!validateField(field)) {
+          isValid = false;
+        }
+      });
+      
+      if (!isValid) {
+        e.preventDefault();
+        // Focus first invalid field
+        const firstInvalid = form.querySelector('.border-red-500');
+        firstInvalid?.focus();
+      }
+    });
+  })();
+</script>

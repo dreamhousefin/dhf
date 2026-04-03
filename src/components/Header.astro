@@ -52,7 +52,7 @@ const currentPath = Astro.url.pathname;
       <div class="hidden lg:block">
         <a 
           href="/kontakt/"
-          class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-medium text-sm rounded-lg hover:bg-primary-hover transition-colors shadow-soft hover:shadow-md"
+          class="btn-premium inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-medium text-sm rounded-lg transition-colors shadow-soft hover:shadow-md"
           aria-label="Zeit für dein Eigentum - Erstgespräch vereinbaren"
         >
           <i class="fa-regular fa-calendar-check" aria-hidden="true"></i>
@@ -69,8 +69,7 @@ const currentPath = Astro.url.pathname;
         aria-controls="mobile-menu"
         aria-label="Menü öffnen"
       >
-        <i id="menu-icon-open" class="fa-solid fa-bars text-xl" aria-hidden="true"></i>
-        <i id="menu-icon-close" class="fa-solid fa-xmark text-xl hidden" aria-hidden="true"></i>
+        <span id="menu-icon" class="fa-solid fa-bars text-xl block" aria-hidden="true"></span>
       </button>
     </div>
   </div>
@@ -87,7 +86,7 @@ const currentPath = Astro.url.pathname;
         return (
           <a 
             href={link.href}
-            class={`block px-4 py-3 text-base font-medium rounded-lg transition-colors ${
+            class={`block px-4 py-3.5 min-h-[44px] flex items-center text-base font-medium rounded-lg transition-colors ${
               isActive 
                 ? 'text-primary bg-primary-light' 
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
@@ -102,7 +101,7 @@ const currentPath = Astro.url.pathname;
       <div class="pt-4 mt-4 border-t border-slate-100">
         <a 
           href="/kontakt/"
-          class="flex items-center justify-center gap-2 w-full px-5 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-hover transition-colors"
+          class="btn-premium flex items-center justify-center gap-2 w-full px-5 py-3 bg-primary text-white font-medium rounded-lg transition-colors"
           aria-label="Zeit für dein Eigentum - Erstgespräch vereinbaren"
         >
           <i class="fa-regular fa-calendar-check" aria-hidden="true"></i>
@@ -118,8 +117,7 @@ const currentPath = Astro.url.pathname;
   (function() {
     const menuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
-    const iconOpen = document.getElementById('menu-icon-open');
-    const iconClose = document.getElementById('menu-icon-close');
+    const menuIcon = document.getElementById('menu-icon');
     
     let isOpen = false;
     
@@ -128,14 +126,14 @@ const currentPath = Astro.url.pathname;
       
       if (isOpen) {
         mobileMenu?.classList.remove('hidden');
-        iconOpen?.classList.add('hidden');
-        iconClose?.classList.remove('hidden');
+        menuIcon?.classList.remove('fa-bars');
+        menuIcon?.classList.add('fa-xmark');
         menuButton?.setAttribute('aria-expanded', 'true');
         menuButton?.setAttribute('aria-label', 'Menü schließen');
       } else {
         mobileMenu?.classList.add('hidden');
-        iconOpen?.classList.remove('hidden');
-        iconClose?.classList.add('hidden');
+        menuIcon?.classList.remove('fa-xmark');
+        menuIcon?.classList.add('fa-bars');
         menuButton?.setAttribute('aria-expanded', 'false');
         menuButton?.setAttribute('aria-label', 'Menü öffnen');
       }

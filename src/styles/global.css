@@ -26,6 +26,17 @@ html {
   scroll-behavior: smooth;
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
+/* Smooth scroll with reduced motion respect */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
@@ -35,6 +46,7 @@ body {
    ======================================== */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
+  text-wrap: balance;
 }
 
 /* Bodoni Moda - Main Headings */
@@ -65,27 +77,40 @@ h3, h4, h5, h6 {
    Focus Styles (Accessibility)
    ======================================== */
 *:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(251, 66, 133, 0.5);
+  border-radius: 4px;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Skip to main content link */
 .skip-link {
-  position: absolute;
-  top: -100%;
+  position: fixed;
+  top: 0;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -100%);
   background: var(--color-primary);
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 0 0 0.5rem 0.5rem;
-  font-weight: 500;
+  font-weight: 600;
   z-index: 9999;
-  transition: top 0.2s;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(251, 66, 133, 0.3);
 }
 
 .skip-link:focus {
-  top: 0;
+  transform: translate(-50%, 0);
 }
 
 /* ========================================
@@ -133,6 +158,51 @@ h3, h4, h5, h6 {
 
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* ========================================
+   iOS Safe Height
+   ======================================== */
+.min-h-safe {
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+}
+
+/* ========================================
+   Mobile Menu Animation
+   ======================================== */
+#mobile-menu {
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              opacity 0.2s ease;
+  pointer-events: none;
+}
+
+#mobile-menu:not(.hidden) {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ========================================
+   Premium Button Styles
+   ======================================== */
+.btn-premium {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.btn-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(251, 66, 133, 0.4);
+}
+
+.btn-premium:active {
+  transform: translateY(0);
 }
 
 /* ========================================
